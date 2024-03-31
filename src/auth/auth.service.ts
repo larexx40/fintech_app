@@ -27,7 +27,7 @@ export class AuthService {
         //confirm if name or username already in db
         const [emailExist, usernameExist] = await Promise.all([
           await this.userService.checkIfExist({email}),
-          await this.userService.checkIfExist({username})
+          username? await this.userService.checkIfExist({username}): null
         ])
         if(emailExist) throw new ConflictException(`User with email: ${email} already exist`);
         if(usernameExist) throw new ConflictException(`User with username: ${username} already exist`);
@@ -35,7 +35,7 @@ export class AuthService {
         //save user to db
         let user = await this.userService.createUser(createUserDto);
         user = await user.save()
-        
+
   
         //generate jwt token
         const token = await this.generateToken(user);
@@ -50,34 +50,39 @@ export class AuthService {
     
     async login(loginDto: LoginDto): Promise<{user: User, token: string}>{
         const {password,  emailOrUsername} = loginDto;
-        try {
-           // Check if the user exists with the provided username or email
-           const user = await this.userService.findUserLogin(emailOrUsername);    
-          if(!user)throw new NotFoundException("User not found");
+        // Check if the user exists with the provided username or email
+        const user = await this.userService.findUserLogin(emailOrUsername); 
+        console.log("user:",user)   
+       if(!user){
+        console.log("here")
+        throw new NotFoundException("User not found");
+       }
     
-          const isValid = await compare(password, user.password)
-          if(!isValid) throw new NotFoundException("Incorrect password");
-    
-          //generate jwt token
-          const token = await this.generateToken(user);
-          return {user, token};
+       const isValid = await compare(password, user.password)
+       if(!isValid) throw new NotFoundException("Incorrect password");
+ 
+       //generate jwt token
+       const token = await this.generateToken(user);
+       return {user, token};
+
+        // try {
           
           
-        } catch (error) {
-          // throw new NotFoundException("Invalid login credentials");
-          throw error;
+        // } catch (error) {
+        //   // throw new NotFoundException("Invalid login credentials");
+        //   throw error;
           
-        }
+        // }
     }
 
 
     async generateToken (user: AuthTokenPayload) {
-        const payload = {
-            userId: user.userId,
-            email: user.email,
-            role: user.role
-        }
-        return jwt.sign(payload, process.env.JWT_SECRET_KEY)
+      const payload = {
+        userId: user.userId,
+        email: user.email,
+        role: user.role
+      }
+      return jwt.sign(payload, process.env.JWT_SECRET_KEY)
     }
 
     async verifyToken(token: string): Promise<AuthTokenPayload> {

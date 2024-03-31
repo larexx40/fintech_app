@@ -5,9 +5,15 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigurationModule } from './config/configuration.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './response/response.interceptor';
+import { SuccessInterceptor } from './response/success.response';
+import { ErrorInterceptor } from './response/error.response';
 
 @Module({
   imports: [
+    ConfigurationModule,
     DatabaseModule,
     JwtModule.registerAsync({
       useFactory: ()=>({
@@ -19,6 +25,20 @@ import { JwtModule } from '@nestjs/jwt';
     AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: ResponseInterceptor,
+    // },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: SuccessInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorInterceptor,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

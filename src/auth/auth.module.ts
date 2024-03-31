@@ -6,7 +6,7 @@ import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports:[
-    UserModule, 
+    UserModule,
   ],
   providers: [
     AuthService, // Include AuthService in the providers array

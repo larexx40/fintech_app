@@ -5,6 +5,7 @@ import { Model } from "mongoose";
 import { IUser } from "./user.interface";
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from "./user.dto";
+import { UserRoles } from "src/utils/enum";
 
 @Injectable()
 export class UserRepository{
@@ -16,7 +17,8 @@ export class UserRepository{
     async createUser(createUserDto: CreateUserDto): Promise<User> {
         const createdUser = this.userModel.create({
             userId: uuidv4(),
-            ...createUserDto
+            ...createUserDto,
+            role: UserRoles.USER
         });
         return createdUser;
     }
