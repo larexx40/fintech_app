@@ -1,4 +1,3 @@
-// success.interceptor.ts
 import {
   Injectable,
   NestInterceptor,
@@ -9,9 +8,10 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export interface BaseResponse<T> {
+export interface ApiResponse<T> {
   message: string;
   data?: T;
+  statusCode?: HttpStatus
 }
 @Injectable()
 export class SuccessInterceptor implements NestInterceptor {
@@ -20,10 +20,9 @@ export class SuccessInterceptor implements NestInterceptor {
       map((data) => {
         // const response = context.switchToHttp().getResponse();
         const message = data.message || 'Operation completed successfully';
-        console.log("data:",data)
         return {
           status: true,
-          statusCode: HttpStatus.OK,
+          statusCode: data.statusCode || HttpStatus.OK,
           message,
           data: data.data || {}
         };

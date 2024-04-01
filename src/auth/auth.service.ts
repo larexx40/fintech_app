@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { AuthTokenPayload } from "src/user/user.interface";
+import { AuthTokenPayload, IUser } from "src/user/user.interface";
 import * as jwt from 'jsonwebtoken';
 import { CreateUserDto, LoginDto } from "src/user/user.dto";
 import { User } from "src/user/user.model";
@@ -12,7 +12,7 @@ export class AuthService {
         private readonly userService: UserService
     ) {};
     
-    async signUp(createUserDto: CreateUserDto): Promise<{user: User, token: string}> {
+    async signUp(createUserDto: CreateUserDto): Promise<{user: IUser, token: string}> {
       if(!createUserDto){
          throw new BadRequestException("Pass user details");
       }

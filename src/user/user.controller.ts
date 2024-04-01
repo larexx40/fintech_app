@@ -1,13 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, HttpStatus, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { AuthGuard } from 'src/auth/auth.gaurd';
 import { RequestWithAuth } from './user.interface';
-export interface ApiResponse<T> {
-  message: string;
-  data?: T;
-  statusCode?: HttpStatus;
-}
+import { ApiResponse } from 'src/response/success.response';
 
 @Controller('users')
 export class UserController {

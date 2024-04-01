@@ -1,4 +1,5 @@
 import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { IUser } from './user.interface';
 import { User } from './user.model';
 import { UserRepository } from './user.repository';
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
@@ -10,7 +11,7 @@ export class UserService{
         private readonly userRepository: UserRepository
     ){}
 
-    async createUser(createUserDto: CreateUserDto): Promise<User> {
+    async createUser(createUserDto: CreateUserDto): Promise<IUser> {
         return this.userRepository.createUser(createUserDto);
     }
     

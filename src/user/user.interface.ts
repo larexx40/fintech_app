@@ -19,6 +19,7 @@ export interface IUser {
     emailVerified: boolean;
     phoneVerified: boolean;
     pinSet: boolean
+    token?: string;
 
 }
 

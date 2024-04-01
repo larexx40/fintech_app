@@ -2,12 +2,8 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request, UseGuards }
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginDto } from 'src/user/user.dto';
 import { AuthGuard } from './auth.gaurd';
+import { ApiResponse } from 'src/response/success.response';
 
-export interface ApiResponse<T> {
-    message: string;
-    data?: T;
-    statusCode?: HttpStatus;
-  }
 @Controller('auth')
 export class AuthController {
     constructor(
@@ -20,9 +16,12 @@ export class AuthController {
         @Body()registerDto: CreateUserDto
     ):Promise<ApiResponse<any>> {
         const signUp = await this.authService.signUp(registerDto);
+        
+        const newData = signUp.user
+        newData.token = signUp.token
         const res = {
             message: 'User registered successfully',
-            data: signUp,
+            data: newData,
             statusCode: HttpStatus.CREATED
         };
         
