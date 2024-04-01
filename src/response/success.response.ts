@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 
 export interface BaseResponse<T> {
   message: string;
-  data: T;
+  data?: T;
 }
 @Injectable()
 export class SuccessInterceptor implements NestInterceptor {

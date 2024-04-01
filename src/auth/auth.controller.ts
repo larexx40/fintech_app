@@ -3,30 +3,40 @@ import { AuthService } from './auth.service';
 import { CreateUserDto, LoginDto } from 'src/user/user.dto';
 import { AuthGuard } from './auth.gaurd';
 
+export interface ApiResponse<T> {
+    message: string;
+    data?: T;
+    statusCode?: HttpStatus;
+  }
 @Controller('auth')
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
     ) {}
 
-    @HttpCode(HttpStatus.OK)
+    @HttpCode(HttpStatus.CREATED)
     @Post('signup')
     async signUp(
         @Body()registerDto: CreateUserDto
-    ) {
+    ):Promise<ApiResponse<any>> {
         const signUp = await this.authService.signUp(registerDto);
-        const response = {
+        const res = {
             message: 'User registered successfully',
-            data: signUp
+            data: signUp,
+            statusCode: HttpStatus.CREATED
         };
         
-        return response;
+        return res;
     }
 
     @Post('login')
     async login(@Body()loginDto: LoginDto){
         const login = await this.authService.login(loginDto)
-        return login
+        const res = {
+            message: 'Login successful',
+            data: login
+        };
+        return res
     }
 
     @UseGuards(AuthGuard)

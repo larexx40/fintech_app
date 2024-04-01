@@ -33,12 +33,16 @@ export class AuthService {
         if(usernameExist) throw new ConflictException(`User with username: ${username} already exist`);
   
         //save user to db
-        let user = await this.userService.createUser(createUserDto);
-        user = await user.save()
+        const user = await this.userService.createUser(createUserDto);
+        const payload: AuthTokenPayload={
+          userId: user.userId,
+          email: user.email,
+          role: user.email
+        }
 
   
         //generate jwt token
-        const token = await this.generateToken(user);
+        const token = await this.generateToken(payload);
         
         return { user, token};
         
@@ -49,30 +53,20 @@ export class AuthService {
     }
     
     async login(loginDto: LoginDto): Promise<{user: User, token: string}>{
-        const {password,  emailOrUsername} = loginDto;
-        // Check if the user exists with the provided username or email
-        const user = await this.userService.findUserLogin(emailOrUsername); 
-        console.log("user:",user)   
-       if(!user){
-        console.log("here")
+      const {password,  emailOrUsername} = loginDto;
+      // Check if the user exists with the provided username or email
+      const user = await this.userService.findUserLogin(emailOrUsername); 
+      if(!user){
         throw new NotFoundException("User not found");
-       }
-    
-       const isValid = await compare(password, user.password)
-       if(!isValid) throw new NotFoundException("Incorrect password");
- 
-       //generate jwt token
-       const token = await this.generateToken(user);
-       return {user, token};
+      }
+  
+      const isValid = await compare(password, user.password)
+      if(!isValid) throw new BadRequestException("Incorrect password");
 
-        // try {
-          
-          
-        // } catch (error) {
-        //   // throw new NotFoundException("Invalid login credentials");
-        //   throw error;
-          
-        // }
+      //generate jwt token
+      const token = await this.generateToken(user);
+      return {user, token};
+        
     }
 
 

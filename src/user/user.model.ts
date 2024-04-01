@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { UserRoles } from 'src/utils/enum';
 
 @Schema()
 export class User extends Document { 
@@ -30,8 +31,23 @@ export class User extends Document {
     @Prop()
     profilePic: string;
 
+    @Prop({type: String, enum: UserRoles, default: UserRoles.USER})
+    role: UserRoles;
+
     @Prop()
-    role: string;
+    pin: number; //4 digit pin for transaction
+
+    @Prop({type: Boolean, default: false})
+    emailVerified: boolean;
+    
+    @Prop({type: Boolean, default: false})
+    phoneVerified: boolean;
+
+    @Prop({type: Boolean, default: false})
+    pinSet: boolean;
+
+    @Prop({ default: 0 })
+    balance: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

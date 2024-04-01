@@ -23,8 +23,12 @@ export class UserRepository{
         return createdUser;
     }
 
-    async findAll(): Promise<User[]> {
-        return this.userModel.find().exec();
+    // Repository
+    async findAll(page = 1, limit = 10): Promise<{data:User[], total: number}> {
+        const skip = (page - 1) * limit;
+        const data = await this.userModel.find().skip(skip).limit(limit).exec();
+        const total = await this.userModel.countDocuments();
+        return { data, total };
     }
 
     async findOne(id: string): Promise<User> {
@@ -43,9 +47,22 @@ export class UserRepository{
         return this.userModel.findOne(whereClause).exec();
     }
 
-    async update(id: string, updateUserDto: any): Promise<User> {
+    async updateProfile(id: string, updateUserDto: any): Promise<User> {
         return this.userModel.findOneAndUpdate({userId:id}, updateUserDto, { new: true }).exec();
     }
+
+    async updateBalance(id: string, newBalance: number): Promise<User> {
+        return this.userModel.findOneAndUpdate({userId:id}, {balance: newBalance}, { new: true }).exec();
+    }
+
+    async removeFromeBalance(id: string, amountToDeduct: number): Promise<User> {
+        return this.userModel.findOneAndUpdate({userId:id}, { $inc: { balance: - amountToDeduct } }, { new: true }).exec();
+    }
+
+    async addToBalance(id: string, amountToDeduct: number): Promise<User> {
+        return this.userModel.findOneAndUpdate({userId:id}, { $inc: { balance:  amountToDeduct } }, { new: true }).exec();
+    }
+
 
     async updateProfilePicture(id: string, imageUrl: any): Promise<User> {
         return this.userModel.findOneAndUpdate({userId:id}, imageUrl, { new: true }).exec();
@@ -53,5 +70,13 @@ export class UserRepository{
 
     async remove(id: string): Promise<User> {
         return this.userModel.findOneAndDelete({userId:id}).exec();
+    }
+
+    async changePassword(userId: string, hashPassword: string){
+        return this.userModel.findOneAndUpdate({userId}, {password: hashPassword}, { new: true }).exec();
+    }
+
+    async setPin(userId: string, hashPin: string){
+        return this.userModel.findOneAndUpdate({userId}, {pin: hashPin}, { new: true }).exec();
     }
 }

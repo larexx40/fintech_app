@@ -7,7 +7,6 @@ import { DatabaseModule } from './database/database.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigurationModule } from './config/configuration.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { ResponseInterceptor } from './response/response.interceptor';
 import { SuccessInterceptor } from './response/success.response';
 import { ErrorInterceptor } from './response/error.response';
 
@@ -26,10 +25,6 @@ import { ErrorInterceptor } from './response/error.response';
   ],
   controllers: [AppController],
   providers: [
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: ResponseInterceptor,
-    // },
     {
       provide: APP_INTERCEPTOR,
       useClass: SuccessInterceptor,

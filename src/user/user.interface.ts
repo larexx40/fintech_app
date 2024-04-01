@@ -5,14 +5,21 @@ const statuses = ["ACTIVE", "INACTIVE", "SUSPENDED", "DELETED", "BANNED"] as con
 export interface IUser {
     _id?: string;
     userId: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
+    balance: number;
     password: string;
+    pin: number;
     username: string;
     age?: number;
     phoneNumber?: string;
     role?: UserRoles;
     status?: typeof statuses[number];
+    emailVerified: boolean;
+    phoneVerified: boolean;
+    pinSet: boolean
+
 }
 
 export interface AuthTokenPayload {
