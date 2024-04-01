@@ -23,6 +23,23 @@ export interface IUser {
 
 }
 
+export interface UserData{
+    userId: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    balance: number;
+    password: string;
+    username: string;
+    age?: number;
+    phoneNumber?: string;
+    role?: UserRoles;
+    emailVerified: boolean;
+    phoneVerified: boolean;
+    pinSet: boolean;
+    token?: string;
+}
+
 export interface AuthTokenPayload {
     userId: string;
     email: string;

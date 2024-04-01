@@ -17,11 +17,9 @@ export class AuthController {
     ):Promise<ApiResponse<any>> {
         const signUp = await this.authService.signUp(registerDto);
         
-        const newData = signUp.user
-        newData.token = signUp.token
         const res = {
             message: 'User registered successfully',
-            data: newData,
+            data: signUp,
             statusCode: HttpStatus.CREATED
         };
         

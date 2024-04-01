@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { AuthTokenPayload, IUser } from "src/user/user.interface";
+import { AuthTokenPayload, UserData } from "src/user/user.interface";
 import * as jwt from 'jsonwebtoken';
 import { CreateUserDto, LoginDto } from "src/user/user.dto";
 import { User } from "src/user/user.model";
@@ -12,7 +12,7 @@ export class AuthService {
         private readonly userService: UserService
     ) {};
     
-    async signUp(createUserDto: CreateUserDto): Promise<{user: IUser, token: string}> {
+    async signUp(createUserDto: CreateUserDto): Promise<UserData> {
       if(!createUserDto){
          throw new BadRequestException("Pass user details");
       }
@@ -43,8 +43,21 @@ export class AuthService {
   
         //generate jwt token
         const token = await this.generateToken(payload);
+        const userData: UserData={
+          userId: user.userId,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          balance: user.balance,
+          password: user.password,
+          username: user.username,
+          emailVerified: user.emailVerified,
+          phoneVerified: user.phoneVerified,
+          pinSet: user.pinSet,
+          token: token
+        }
         
-        return { user, token};
+        return userData;
         
       } catch (error) {
         // throw new InternalServerErrorException("Unable to create user"); 
