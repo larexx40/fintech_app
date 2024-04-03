@@ -1,14 +1,10 @@
 import { TransactionService } from './transaction.service';
-import { Controller, Get, Post, Request, Body, Param, UseGuards, Patch, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Request, Body, Param, UseGuards, Patch } from '@nestjs/common';
 import { ChangeTransactionStatusDto, NewTransactionDto } from './transaction.dto';
 import { AuthGuard } from 'src/auth/auth.gaurd';
 import { RequestWithAuth } from 'src/user/user.interface';
+import { ApiResponse } from 'src/response/success.response';
 
-export interface ApiResponse<T> {
-  message: string;
-  data?: T;
-  statusCode?: HttpStatus;
-}
 
 @Controller('transactions')
 export class TransactionController {
@@ -16,12 +12,16 @@ export class TransactionController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createTransaction(
+  async createTransaction(
     @Request() req: RequestWithAuth,
     @Body() input: NewTransactionDto
-  ) {
+  ):Promise<ApiResponse<any>> {
     const userId = req.user.userId;
-    return this.transactionService.createTransaction(userId, input);
+    const transaction = await this.transactionService.createTransaction(userId, input);
+    return {
+      message: "Transaction created successfully",
+      data: transaction
+    }
   }
 
   @Get()

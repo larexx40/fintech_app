@@ -1,5 +1,6 @@
-import { IsString, IsEmail, IsOptional, IsPhoneNumber, IsNumber, IsNotEmpty } from 'class-validator';
-
+import { IsString, IsEmail, IsOptional, IsPhoneNumber, IsNotEmpty, Matches, IsDate } from 'class-validator';
+const passwordRegEx =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
@@ -15,6 +16,13 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
+  @Matches(passwordRegEx, {
+    message: `Password must contain Minimum 8 and maximum 20 characters,
+    at least 1 uppercase letter,
+    lowercase letter,
+    number and
+    a special character`,
+  })
   password: string;
 
   @IsOptional()
@@ -22,8 +30,8 @@ export class CreateUserDto {
   username: string;
 
   @IsOptional()
-  @IsNumber()
-  age?: number;
+  @IsDate()
+  dob?: Date;
 
   @IsOptional()
   @IsPhoneNumber()
@@ -39,16 +47,18 @@ export class UpdateUserDto {
   @IsString()
   lastName?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  address: string;
+  address?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  occupation: string;
+  occupation?: string;
 
-  @IsString()
-  password: string;
+  @IsOptional()
+  @IsDate()
+  dob: Date;
+
 }
 
 export class LoginDto{

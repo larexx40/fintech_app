@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { UserRoles } from 'src/utils/enum';
+import { UserRoles } from '../utils/enum';
 
 @Schema()
 export class User extends Document { 
@@ -23,7 +23,7 @@ export class User extends Document {
     username: string;
 
     @Prop()
-    age: number;
+    dob: Date;
 
     @Prop()
     phoneNumber: string;

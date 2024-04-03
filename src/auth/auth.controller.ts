@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDto, LoginDto } from 'src/user/user.dto';
 import { AuthGuard } from './auth.gaurd';
 import { ApiResponse } from 'src/response/success.response';
+import { RequestWithAuth } from './auth.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +28,7 @@ export class AuthController {
     }
 
     @Post('login')
-    async login(@Body()loginDto: LoginDto){
+    async login(@Body()loginDto: LoginDto):Promise<ApiResponse<any>>{
         const login = await this.authService.login(loginDto)
         const res = {
             message: 'Login successful',
@@ -38,7 +39,12 @@ export class AuthController {
 
     @UseGuards(AuthGuard)
     @Get('profile')
-    getProfile(@Request() req) {
-        return req.user;
+    async getProfile(@Request() req: RequestWithAuth):Promise<ApiResponse<any>> {
+        const userId = req.user.userId;
+        const user = await this.authService.getProfile(userId)
+        return {
+            message: "Profile fetched successfully",
+            data: user
+        };
     }
 }

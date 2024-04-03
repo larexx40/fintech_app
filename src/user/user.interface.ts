@@ -12,7 +12,7 @@ export interface IUser {
     password: string;
     pin: number;
     username: string;
-    age?: number;
+    dob?: Date;
     phoneNumber?: string;
     role?: UserRoles;
     status?: typeof statuses[number];
@@ -31,7 +31,7 @@ export interface UserData{
     balance: number;
     password: string;
     username: string;
-    age?: number;
+    dob?: Date;
     phoneNumber?: string;
     role?: UserRoles;
     emailVerified: boolean;

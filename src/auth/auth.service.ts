@@ -1,8 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { AuthTokenPayload, UserData } from "src/user/user.interface";
+import { AuthTokenPayload, IUser, UserData } from "src/user/user.interface";
 import * as jwt from 'jsonwebtoken';
 import { CreateUserDto, LoginDto } from "src/user/user.dto";
-import { User } from "src/user/user.model";
 import { compare, hash } from "bcrypt";
 import { UserService } from "src/user/user.service";
 
@@ -64,11 +63,19 @@ export class AuthService {
         throw error;     
       }
     }
+
+    async getProfile(userId: string): Promise<UserData>{
+      if(!userId) throw new BadRequestException("Pass in user id")
+      const user = await this.userService.findOne(userId);
+      if(!user) throw new NotFoundException("User with id does not exist")
+      return user
+    }
     
-    async login(loginDto: LoginDto): Promise<{user: User, token: string}>{
+    async login(loginDto: LoginDto): Promise<{user: IUser, token: string}>{
+      if(!loginDto) throw new BadRequestException("Pass in login data")
       const {password,  emailOrUsername} = loginDto;
       // Check if the user exists with the provided username or email
-      const user = await this.userService.findUserLogin(emailOrUsername); 
+      const user: IUser = await this.userService.findUserLogin(emailOrUsername); 
       if(!user){
         throw new NotFoundException("User not found");
       }
@@ -76,8 +83,14 @@ export class AuthService {
       const isValid = await compare(password, user.password)
       if(!isValid) throw new BadRequestException("Incorrect password");
 
+      const payload: AuthTokenPayload ={
+        userId: user.userId,
+        email: user.email,
+        role: user.role
+      }
+
       //generate jwt token
-      const token = await this.generateToken(user);
+      const token = await this.generateToken(payload);
       return {user, token};
         
     }
