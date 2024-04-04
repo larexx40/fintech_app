@@ -79,8 +79,8 @@ $ yarn run test
 
 ## Stay in touch
 
-- Author - [R. O. Olatunji](https://larexx40.github.io/me/){:target="_blank"}
-- Linkedin - [R Olatunji](https://www.linkedin.com/in/rokeebolatunji/){:target="_blank"}
+- Author - [R. O. Olatunji](https://larexx40.github.io/me/)
+- Linkedin - [R Olatunji](https://www.linkedin.com/in/rokeebolatunji/)
 
 ## License
 
