@@ -53,6 +53,30 @@ export class UserService{
         return res
     }
 
+    async updateUserBalance(userId: string, amount: number){
+        //throw badrequest if input not passed
+        if(!userId || !amount) throw new BadRequestException("Pass in user amount data")
+        const res = await this.userRepository.updateBalance(userId, amount)
+        if(!res) throw new NotFoundException(`User with id ${userId} not found`);
+        return res;
+    }
+
+    async deductUserBalance(userId: string, amount: number):Promise<number>{
+        //throw badrequest if input not passed
+        if(!userId || !amount) throw new BadRequestException("Pass in user amount data")
+        const res = await this.userRepository.removeFromeBalance(userId, amount)
+        if(!res) throw new NotFoundException(`User with id ${userId} not found`);
+        return res.balance;
+    }
+
+    async addToUserBalance(userId: string, amount: number):Promise<number>{
+        //throw badrequest if input not passed
+        if(!userId || !amount) throw new BadRequestException("Pass in user amount data")
+        const res = await this.userRepository.addToBalance(userId, amount)
+        if(!res) throw new NotFoundException(`User with id ${userId} not found`);
+        return res.balance;
+    }
+
     async deleteUser(id: string): Promise<boolean> {
         //throw badrequest if input not passed;
         if(!id) throw new BadRequestException("Pass in user id")        

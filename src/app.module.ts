@@ -9,6 +9,7 @@ import { ConfigurationModule } from './config/configuration.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { SuccessInterceptor } from './response/success.response';
 import { ErrorInterceptor } from './response/error.response';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { ErrorInterceptor } from './response/error.response';
       })
     }),
     UserModule, 
-    AuthModule
+    AuthModule,
+    TransactionModule
   ],
   controllers: [AppController],
   providers: [

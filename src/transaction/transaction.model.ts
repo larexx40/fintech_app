@@ -13,7 +13,7 @@ export class Transaction extends Document {
   @Prop({ required: true })
   amount: number;
 
-  @Prop({ required: true })
+  @Prop()
   description: string;
 
   @Prop({ required: true, enum: TransactionType })

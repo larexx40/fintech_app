@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
 import { TransactionStatus, TransactionType } from 'src/utils/enum';
 
 export class NewTransactionDto {
@@ -8,7 +8,12 @@ export class NewTransactionDto {
   
   @IsNotEmpty()
   @IsString()
+  @IsEnum(TransactionType)
   transactionType: TransactionType;
+
+  @IsOptional()
+  @IsString()
+  description?: string
 }
 
 export class ChangeTransactionStatusDto {
@@ -18,6 +23,7 @@ export class ChangeTransactionStatusDto {
   
   @IsNotEmpty()
   @IsString()
+  @IsEnum(TransactionStatus)
   status: TransactionStatus;
 }
 

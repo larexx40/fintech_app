@@ -28,19 +28,39 @@ export class TransactionController {
   @UseGuards(AuthGuard)
   async getUserTransactions(
     @Request()req: RequestWithAuth
-  ) {
+  ): Promise<ApiResponse<any>> {
     const userId = req.user.userId
-    return await this.transactionService.getUserTransactions(userId);
+    const transactions = await this.transactionService.getUserTransactions(userId);
+    return{
+      message: "Transaction fetched",
+      data: transactions
+    }
   }
 
   @Get(':id')
   @UseGuards(AuthGuard)
   async getTransaction(
+    @Param('id') id: string
+  ): Promise<ApiResponse<any>> {
+    const transaction = await this.transactionService.getTransactionById(id);
+    return {
+      message:(transaction)? "Transaction fetched": "No record found",
+      data: transaction
+    }
+  }
+
+  @Get(':id')
+  @UseGuards(AuthGuard)
+  async getTransactionBy(
     @Request()req: RequestWithAuth,
     @Param('id') id: string
-  ) {
+  ): Promise<ApiResponse<any>> {
     const userId = req.user.userId
-    return await this.transactionService.getUserTransactionById(userId,id);
+    const transaction = await this.transactionService.getUserTransactionById(userId,id);
+    return {
+      message: "Transaction fetched",
+      data: transaction
+    }
   }
 
   @Patch('change-status/:id')

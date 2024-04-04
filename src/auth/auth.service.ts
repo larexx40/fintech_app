@@ -21,47 +21,43 @@ export class AuthService {
       //encrypt password
       const hashPassword = await hash(password, 10)
       createUserDto.password = hashPassword;
-    
-      try {
-        //confirm if name or username already in db
-        const [emailExist, usernameExist] = await Promise.all([
-          await this.userService.checkIfExist({email}),
-          username? await this.userService.checkIfExist({username}): null
-        ])
-        if(emailExist) throw new ConflictException(`User with email: ${email} already exist`);
-        if(usernameExist) throw new ConflictException(`User with username: ${username} already exist`);
-  
-        //save user to db
-        const user = await this.userService.createUser(createUserDto);
-        const payload: AuthTokenPayload={
-          userId: user.userId,
-          email: user.email,
-          role: user.email
-        }
 
-  
-        //generate jwt token
-        const token = await this.generateToken(payload);
-        const userData: UserData={
-          userId: user.userId,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          balance: user.balance,
-          password: user.password,
-          username: user.username,
-          emailVerified: user.emailVerified,
-          phoneVerified: user.phoneVerified,
-          pinSet: user.pinSet,
-          token: token
-        }
-        
-        return userData;
-        
-      } catch (error) {
-        // throw new InternalServerErrorException("Unable to create user"); 
-        throw error;     
+      //confirm if name or username already in db
+      const [emailExist, usernameExist] = await Promise.all([
+        await this.userService.checkIfExist({email}),
+        username? await this.userService.checkIfExist({username}): null
+      ])
+      if(emailExist) throw new ConflictException(`User with email: ${email} already exist`);
+      if(usernameExist) throw new ConflictException(`User with username: ${username} already exist`);
+
+      //save user to db
+      const user = await this.userService.createUser(createUserDto);
+      const payload: AuthTokenPayload={
+        userId: user.userId,
+        email: user.email,
+        role: user.email
       }
+
+
+      //generate jwt token
+      const token = await this.generateToken(payload);
+      const userData: UserData={
+        userId: user.userId,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        balance: user.balance,
+        password: user.password,
+        username: user.username,
+        emailVerified: user.emailVerified,
+        phoneVerified: user.phoneVerified,
+        pinSet: user.pinSet,
+        token: token
+      }
+      
+      return userData;
+        
+      
     }
 
     async getProfile(userId: string): Promise<UserData>{

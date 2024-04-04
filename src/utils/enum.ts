@@ -6,10 +6,9 @@ export enum UserRoles {
 }
 
 export enum TransactionType {
-    DEPOSIT ='deposit',
-    WITHRAW = 'withdraw',
-    TRANSFER = 'transfer',
-    PAYMENT = 'payment' //e.g for utility payment
+    SPEND ='Spend',
+    SEND = 'Send',
+    RECEIVE = 'Receive',
 }
 
 export enum TransactionStatus {
