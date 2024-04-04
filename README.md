@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is a set of RESTful APIs for a simple fintech application built using [Nest](https://github.com/nestjs/nest), a progressive Node.js framework. The APIs allow users to perform basic transactions, manage their accounts, and update their details.
 
 ## Installation
 
@@ -50,23 +50,37 @@ $ yarn run start:prod
 ```bash
 # unit tests
 $ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
 ```
 
-## Support
+## Features
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### User Management
+- **Register a new user:** Allows users to create a new account by providing necessary details.
+- **Authenticate a user:** Provides authentication functionality for users to log in securely.
+- **Update user details:** Allows users to update their profile information such as name, address, date of birth etc.
+- **Delete user account:** Allows users to delete their account if they wish to discontinue using the application.
+
+### Transaction Management
+- **Create a new transaction:** Allows users to make transactions (Send, Receive, Spend).
+- **Retrieve transactions:** Users can retrieve a list of their transactions to track their financial activities.
+- **Retrieve a single transaction:** Provides functionality to retrieve details of a specific transaction by its ID.
+
+### Account Balance
+- **Retrieve account balance:** Allows users to check their account balance at any time.
+- **Update account balance:** Automatically updates the account balance after each transaction to reflect accurate financial status.
+
+## Technologies Used
+- **NestJS**: A progressive Node.js framework used for building scalable and efficient server-side applications.
+- **TypeScript**: A statically typed superset of JavaScript used for development, ensuring type safety and improved code maintainability.
+- **MongoDB**: A NoSQL database used for storing user data, transaction details, and account balances.
+- **Jest**: A testing framework used for writing unit tests to ensure the reliability and correctness of the APIs.
+- **HTTP Status Codes**: Proper HTTP status codes are utilized for API responses to convey the success or failure of requests effectively.
+
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [R. O. Olatunji](https://larexx40.github.io/me/){:target="_blank"}
+- Linkedin - [R Olatunji](https://www.linkedin.com/in/rokeebolatunji/){:target="_blank"}
 
 ## License
 
