@@ -13,6 +13,8 @@ export interface IUser {
     pin: number;
     username: string;
     dob?: Date;
+    occupation?: string;
+    address?: string;
     phoneNumber?: string;
     role?: UserRoles;
     status?: typeof statuses[number];

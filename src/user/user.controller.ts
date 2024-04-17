@@ -58,13 +58,29 @@ export class UserController {
     }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateProfile(id, updateUserDto);
+  @Patch()
+  @UseGuards(AuthGuard)
+  async updateUserDetails(
+    @Request() req: RequestWithAuth, 
+    @Body() updateUserDto: UpdateUserDto
+  ): Promise<ApiResponse<any>> {
+    const userId = req.user.userId;
+    const updateUser =  await  this.userService.updateProfile(userId, updateUserDto);
+    return {
+      message: (updateUser)?"User profile updated" : "Unable to update user details",
+      data: updateUser
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.deleteUser(id);
+  @Delete()
+  @UseGuards(AuthGuard)
+  async deleteAccount(
+    @Request() req: RequestWithAuth, 
+  ): Promise<ApiResponse<any>> {
+    const userId = req.user.userId;
+    const del = await this.userService.deleteUser(userId);
+    return {
+      message: (del)? "Account deleted": "Unable to delete account"
+    }
   }
 }

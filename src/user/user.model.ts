@@ -13,16 +13,21 @@ export class User extends Document {
     @Prop()
     lastName: string;
 
-    @Prop()
+    @Prop({ required: true })
     password: string;
 
-    @Prop()
+    @Prop({ required: true })
     email: string;
 
-    @Prop()
+    @Prop({ type: String, default: null })
     username: string;
 
-    @Prop()
+    @Prop({ type: String, default: null })
+    address: string;
+    @Prop({ type: String, default: null })
+    occupation: string;
+
+    @Prop({type: Date, default: null})
     dob: Date;
 
     @Prop()

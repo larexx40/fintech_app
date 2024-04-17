@@ -42,6 +42,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   firstName?: string;
+
+  @IsOptional()
+  @IsString()
+  username?: string;
   
   @IsOptional()
   @IsString()
@@ -57,7 +61,7 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsDate()
-  dob: Date;
+  dob?: Date;
 
 }
 
